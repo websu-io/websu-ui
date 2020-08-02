@@ -8614,6 +8614,11 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-lighthouse-viewer@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/react-lighthouse-viewer/-/react-lighthouse-viewer-6.0.2.tgz#da5089ee32248f86e2d777c690d1ab01b8a1fe6f"
+  integrity sha512-sr4uYN9pnN50tTfpFHNXHoSWoaSVTAXsO5X+T0ojR0iCUtfT39ZRFQvL2u89w7p40yob3baDZtBIMouStK/ycg==
+
 react-scripts@3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-3.4.1.tgz#f551298b5c71985cc491b9acf3c8e8c0ae3ada0a"
