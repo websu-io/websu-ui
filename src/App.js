@@ -1,8 +1,16 @@
 import React from 'react';
 import './App.css';
-import ReportViewer from 'react-lighthouse-viewer';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useLocation,
+} from 'react-router-dom';
 
-// import jsonReport from './report.json';
+import {Row, Col, Navbar, Nav, Container} from 'react-bootstrap';
+
+import ReportViewer from 'react-lighthouse-viewer';
 
 
 class App extends React.Component {
@@ -32,12 +40,42 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <ScanBar url={this.state.url} onURLChange={this.handleURLChange} onSubmit={this.runScan}/>
-        <ReportViewer json={this.state.jsonReport} />
-      </div>
+      <Container fluid>
+        <Router>
+          <Navbar bg="primary" variant="dark">
+            <Navbar.Brand as={Link} className="offset-md-1" to="/">Websu</Navbar.Brand>
+            <Nav className="mr-auto">
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
+            </Nav>
+          </Navbar>
+          <Switch>
+            <Route exact path="/">
+              <Row>
+                <Col className="col-md-6 offset-md-3">
+                  <ScanBar url={this.state.url} onURLChange={this.handleURLChange} onSubmit={this.runScan}/>
+                </Col>
+              </Row>
+              <ReportViewer json={this.state.jsonReport} />
+            </Route>
+            <Route path="*">
+              <NoMatch />
+            </Route>
+          </Switch>
+        </Router>
+      </Container>
     );
   }
+}
+
+
+function NoMatch() {
+  const location = useLocation();
+
+  return (
+    <div>
+      <h3>No match for <code>{location.pathname}</code></h3>
+    </div>
+  );
 }
 
 
