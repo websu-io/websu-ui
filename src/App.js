@@ -8,7 +8,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 
-import {Row, Col, Navbar, Nav, Container} from 'react-bootstrap';
+import {Spinner, Button, Navbar, Nav} from 'react-bootstrap';
 
 import ReportViewer from 'react-lighthouse-viewer';
 
@@ -18,7 +18,7 @@ class App extends React.Component {
     super(props);
     this.handleURLChange = this.handleURLChange.bind(this);
     this.runScan = this.runScan.bind(this);
-    this.state = {url: '', jsonReport: '', state: ''};
+    this.state = {url: '', jsonReport: '', loading: false};
   }
 
   handleURLChange(url) {
@@ -26,47 +26,55 @@ class App extends React.Component {
   }
 
   runScan(url) {
-    this.setState({url: url, state: 'Requesting'});
+    this.setState({url: url, loading: true});
     fetch(process.env.REACT_APP_API_SERVER+'/scans', {
       method: 'post',
       body: `{"URL": "`+this.state.url+`"}`,
     }).then((response) => response.json() )
         .then((jsonResponse) => {
-          console.log(jsonResponse);
-          this.setState({jsonReport: JSON.parse(jsonResponse.json)});
+          this.setState({jsonReport: JSON.parse(jsonResponse.json), loading: false});
         });
   }
 
-
   render() {
+    let reportViewer;
+    if (this.state.loading) {
+      reportViewer = <div className="mt-3 text-center"><p>Analysis has started. This takes about 10 to 20 seconds to complete.</p><Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner></div>;
+    } else {
+      reportViewer = <ReportViewer json={this.state.jsonReport} />;
+    }
     return (
-      <Container fluid>
-        <Router>
-          <Navbar bg="primary" variant="dark">
-            <Navbar.Brand as={Link} className="offset-md-1" to="/">Websu</Navbar.Brand>
-            <Nav className="mr-auto">
-              <Nav.Link as={Link} to="/">Home</Nav.Link>
-            </Nav>
-          </Navbar>
-          <Switch>
-            <Route exact path="/">
-              <Row>
-                <Col className="col-md-6 offset-md-3">
-                  <ScanBar url={this.state.url} onURLChange={this.handleURLChange} onSubmit={this.runScan}/>
-                </Col>
-              </Row>
-              <ReportViewer json={this.state.jsonReport} />
-            </Route>
-            <Route path="*">
-              <NoMatch />
-            </Route>
-          </Switch>
-        </Router>
-      </Container>
+      <Router>
+        <Navbar sticky="top" bg="dark" variant="dark">
+          <Navbar.Brand as={Link} className="offset-md-1" to="/">Websu</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Nav className="mr-auto">
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/scans">Scans</Nav.Link>
+            <Nav.Link as={Link} to="/api">API Reference</Nav.Link>
+          </Nav>
+        </Navbar>
+        <Switch>
+          <Route exact path="/">
+            <header className="bg-primary text-white">
+              <div className="container text-center">
+                <h1>Websu - Optimizing web app performance</h1>
+                <p className="lead">Optimize your web applications for speed using Lighthouse. Run an analysis below or integrate with the API.</p>
+                <ScanBar url={this.state.url} onURLChange={this.handleURLChange} onSubmit={this.runScan}/>
+              </div>
+            </header>
+            <div className="container-fluid text-center">
+              {reportViewer}
+            </div>
+          </Route>
+          <Route path="*">
+            <NoMatch />
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }
-
 
 function NoMatch() {
   const location = useLocation();
@@ -98,9 +106,9 @@ class ScanBar extends React.Component {
 
   render() {
     return (
-      <form className="form-inline mr-auto mb-4" onSubmit={this.handleSubmit}>
-        <input className="form-control mr-sm-2" name="url" value={this.props.url} onChange={this.handleChange} type="text" placeholder="URL..." aria-label="Scan"></input>
-        <button className="btn btn-outline-primary btn-rounded btn-sm my-0 waves-effect waves-light" type="submit">Scan</button>
+      <form className="centered form-inline mr-auto mb-4" onSubmit={this.handleSubmit}>
+        <input className="form-control mr-sm-2" name="url" value={this.props.url} onChange={this.handleChange} type="text" placeholder="Enter your URL..." aria-label="Scan"></input>
+        <Button variant="light" className="btn btn-rounded btn-sm my-0 waves-effect waves-light" type="submit">Analyze</Button>
       </form>
     );
   }
