@@ -1,4 +1,5 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Websu UI - A frontend that consumes Websu API
+For more details please see the [Websu Github project](https://github.com/websu-io/websu).
 
 ## Available Scripts
 
