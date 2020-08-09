@@ -1,4 +1,5 @@
 import React from 'react';
+import config from './config.js';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -27,7 +28,7 @@ class App extends React.Component {
 
   runScan(url) {
     this.setState({url: url, loading: true});
-    fetch(process.env.REACT_APP_API_SERVER+'/scans', {
+    fetch(config.apiHost+'/scans', {
       method: 'post',
       body: `{"URL": "`+this.state.url+`"}`,
     }).then((response) => response.json() )
