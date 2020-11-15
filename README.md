@@ -5,7 +5,7 @@ For more details please see the [Websu Github project](https://github.com/websu-
 
 In the project directory, you can run:
 
-### `yarn start`
+### `REACT_APP_API_SERVER=http://localhost:8000 yarn start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
