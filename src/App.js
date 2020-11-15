@@ -51,7 +51,6 @@ class App extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Nav className="mr-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/api">API Reference</Nav.Link>
           </Nav>
         </Navbar>
         <Switch>
