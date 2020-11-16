@@ -28,6 +28,10 @@ class App extends React.Component {
 
   runScan(url) {
     this.setState({url: url, loading: true});
+    // prepend http if http(s) isn't added
+    if (!/^https?:\/\//i.test(this.state.url)) {
+        this.setState({url: 'http://' + url})
+    }
     fetch(config.apiHost+'/scans', {
       method: 'post',
       body: `{"URL": "`+this.state.url+`"}`,
