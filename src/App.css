@@ -11,10 +11,6 @@ header {
   padding: 60px 0 20px;
 }
 
-section {
-  padding: 150px 0;
-}
-
 .centered {
   display: flex;
   align-items: center;

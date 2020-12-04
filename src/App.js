@@ -13,6 +13,9 @@ import {Spinner, Button, Navbar, Nav} from 'react-bootstrap';
 
 import ReportViewer from 'react-lighthouse-viewer';
 
+import SwaggerUI from "swagger-ui-react"
+import "swagger-ui-react/swagger-ui.css"
+
 
 class App extends React.Component {
   constructor(props) {
@@ -33,12 +36,12 @@ class App extends React.Component {
     }
     this.setState({url: url, loading: true});
 
-    fetch(config.apiHost+'/scans', {
+    fetch(config.apiHost+'/reports', {
       method: 'post',
       body: `{"URL": "`+url+`"}`,
     }).then((response) => response.json() )
         .then((jsonResponse) => {
-          this.setState({jsonReport: JSON.parse(jsonResponse.json), loading: false});
+          this.setState({jsonReport: JSON.parse(jsonResponse.raw_json), loading: false});
         });
   }
 
@@ -56,6 +59,7 @@ class App extends React.Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Nav className="mr-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/api-docs">API documentation</Nav.Link>
           </Nav>
         </Navbar>
         <Switch>
@@ -63,13 +67,16 @@ class App extends React.Component {
             <header className="bg-primary text-white">
               <div className="container text-center">
                 <h1>Websu - Optimizing web app performance</h1>
-                <p className="lead">Optimize your web applications for speed using Lighthouse. Run an analysis below or integrate with the API.</p>
+                <p className="lead">Optimize your web applications for speed using Lighthouse. Generate a report below or integrate with the API.</p>
                 <ScanBar url={this.state.url} onURLChange={this.handleURLChange} onSubmit={this.runScan}/>
               </div>
             </header>
             <div className="container-fluid text-center">
               {reportViewer}
             </div>
+          </Route>
+          <Route exact path="/api-docs">
+            <SwaggerUI url={config.apiHost + "/docs/doc.json"} />
           </Route>
           <Route path="*">
             <NoMatch />
