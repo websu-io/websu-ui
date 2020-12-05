@@ -61,6 +61,7 @@ class App extends React.Component {
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/api-docs">API documentation</Nav.Link>
           </Nav>
+         <iframe className="mr-sm-4" src="https://ghbtns.com/github-btn.html?user=websu-io&repo=websu&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
         </Navbar>
         <Switch>
           <Route exact path="/">
