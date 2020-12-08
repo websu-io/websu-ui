@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import config from './config.js';
 import './App.css';
 import {
@@ -9,7 +9,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 
-import {Spinner, Button, Navbar, Nav} from 'react-bootstrap';
+import {Row, Col, Spinner, Button, ToggleButtonGroup, ToggleButton, Navbar, Nav, Form} from 'react-bootstrap';
 
 import ReportViewer from 'react-lighthouse-viewer';
 
@@ -17,41 +17,29 @@ import SwaggerUI from "swagger-ui-react"
 import "swagger-ui-react/swagger-ui.css"
 
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleURLChange = this.handleURLChange.bind(this);
-    this.runScan = this.runScan.bind(this);
-    this.state = {url: '', jsonReport: '', loading: false};
-  }
+function App() {
+    const [url, setUrl] = useState("");
+    const [formFactor, setFormFactor] = useState("desktop");
+    const [loading, setLoading] = useState(false);
+    const [jsonReport, setJsonReport] = useState("");
 
-  handleURLChange(url) {
-    this.setState({url: url});
-  }
+    function runScan() {
+        // prepend http if http(s) isn't added
+        if (!/^https?:\/\//i.test(url)) {
+            url = 'http://' + url
+        }
+        setUrl(url);
+        setLoading(true);
 
-  runScan(url) {
-    // prepend http if http(s) isn't added
-    if (!/^https?:\/\//i.test(url)) {
-        url = 'http://' + url
-    }
-    this.setState({url: url, loading: true});
-
-    fetch(config.apiHost+'/reports', {
-      method: 'post',
-      body: `{"URL": "`+url+`"}`,
-    }).then((response) => response.json() )
-        .then((jsonResponse) => {
-          this.setState({jsonReport: JSON.parse(jsonResponse.raw_json), loading: false});
+        fetch(config.apiHost+'/reports', {
+          method: 'post',
+          body: `{"url": "`+url+`", "form_factor": "`+formFactor+`"}`,
+        }).then((response) => response.json()).then((jsonResponse) => {
+                setJsonReport(JSON.parse(jsonResponse.raw_json));
+                setLoading(false)
         });
-  }
-
-  render() {
-    let reportViewer;
-    if (this.state.loading) {
-      reportViewer = <div className="mt-3 text-center"><p>Analysis has started. This takes about 10 to 20 seconds to complete.</p><Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner></div>;
-    } else {
-      reportViewer = <ReportViewer json={this.state.jsonReport} />;
     }
+
     return (
       <Router>
         <Navbar sticky="top" bg="dark" variant="dark">
@@ -67,13 +55,19 @@ class App extends React.Component {
           <Route exact path="/">
             <header className="bg-primary text-white">
               <div className="container text-center">
-                <h1>Websu - Optimizing web app performance</h1>
-                <p className="lead">Optimize your web applications for speed using Lighthouse. Generate a report below or integrate with the API.</p>
-                <ScanBar url={this.state.url} onURLChange={this.handleURLChange} onSubmit={this.runScan}/>
+                  <h1>Websu - Optimizing web app performance</h1>
+                  <p className="lead">Optimize your web applications for speed using Lighthouse. Generate a report below or integrate with the API.</p>
+                <div class="row">
+                  <div class="col"></div>
+                  <div class="col-6">
+                    <GenerateReportForm onSubmit={runScan} url={url} setUrl={setUrl} formFactor={formFactor} setFormFactor={setFormFactor} />
+                  </div>
+                  <div class="col"></div>
               </div>
+            </div>
             </header>
             <div className="container-fluid text-center">
-              {reportViewer}
+              <LoadingReportViewer loading={loading} jsonReport={jsonReport} />
             </div>
           </Route>
           <Route exact path="/api-docs">
@@ -85,12 +79,11 @@ class App extends React.Component {
         </Switch>
       </Router>
     );
-  }
-}
+};
+
 
 function NoMatch() {
   const location = useLocation();
-
   return (
     <div>
       <h3>No match for <code>{location.pathname}</code></h3>
@@ -99,32 +92,48 @@ function NoMatch() {
 }
 
 
-class ScanBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {url: ''};
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+const GenerateReportForm = ({onSubmit, url, setUrl, formFactor, setFormFactor}) => {
+    function handleSubmit (event) {
+        event.preventDefault();
+        onSubmit();
+    }
 
-  handleChange(event) {
-    this.props.onURLChange(event.target.value);
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    this.props.onSubmit(this.props.url);
-  }
-
-  render() {
     return (
-      <form className="centered form-inline mr-auto mb-4" onSubmit={this.handleSubmit}>
-        <input className="form-control mr-sm-2" name="url" value={this.props.url} onChange={this.handleChange} type="text" placeholder="Enter your URL..." aria-label="Scan"></input>
-        <Button variant="light" className="btn btn-rounded btn-sm my-0 waves-effect waves-light" type="submit">Analyze</Button>
-      </form>
-    );
-  }
-}
+      <Form onSubmit={handleSubmit}>
+        <Form.Row>
+          <Form.Group as={Col}>
+            <Form.Control size="lg" type="url" name="url" placeholder="e.g. https://www.google.com" value={url} onChange={e => setUrl(e.target.value)}/>
+          </Form.Group>
+          <Form.Group as={Col} sm={2}>
+            <Button variant="success" size="lg" className="btn btn-rounded btn-md my-0 waves-effect waves-light" type="submit">Analyze</Button>
+          </Form.Group>
+        </Form.Row>
+        <Form.Row>
+          <Form.Group as={Col} sm={4}>
+            <Form.Label>Form Factor</Form.Label>
+            <ToggleButtonGroup type="radio" name="options" value={formFactor} onChange={(val, e) => setFormFactor(val)} defaultValue="desktop">
+              <ToggleButton variant="secondary" value="desktop">Desktop</ToggleButton>
+              <ToggleButton variant="secondary" value="mobile">Mobile</ToggleButton>
+            </ToggleButtonGroup>
+          </Form.Group>
+        </Form.Row>
+      </Form>
+    )
+};
+
+const LoadingReportViewer = ({loading, jsonReport}) => {
+    if (loading) {
+      return (
+          <div className="mt-3 text-center">
+            <p>Analysis has started. This takes about 10 to 20 seconds to complete.</p>
+            <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>
+          </div>
+      )
+    } else {
+      return <ReportViewer json={jsonReport} />
+    }
+};
+
 
 
 export default App;
