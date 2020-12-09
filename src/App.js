@@ -22,15 +22,16 @@ function App() {
 
     function runScan() {
         // prepend http if http(s) isn't added
+        let newUrl = url;
         if (!/^https?:\/\//i.test(url)) {
-            url = 'http://' + url
+            newUrl = 'http://' + url
         }
-        setUrl(url);
+        setUrl(newUrl);
         setLoading(true);
 
         fetch(config.apiHost+'/reports', {
           method: 'post',
-          body: `{"url": "`+url+`", "form_factor": "`+formFactor+`"}`,
+          body: `{"url": "`+newUrl+`", "form_factor": "`+formFactor+`"}`,
         }).then((response) => response.json()).then((jsonResponse) => {
                 setJsonReport(JSON.parse(jsonResponse.raw_json));
                 setLoading(false)
