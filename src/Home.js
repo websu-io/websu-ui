@@ -1,30 +1,56 @@
-import React from 'react';
-import GenerateReportForm from './GenerateReportForm';
-import LoadingReportViewer from './LoadingReportViewer';
+import React from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
+import GenerateReportForm from './GenerateReportForm'
+import LoadingReportViewer from './LoadingReportViewer'
+import { Link } from 'react-router-dom'
 
-const Home = ({onSubmit, url, setUrl, formFactor, setFormFactor, jsonReport, loading}) => {
-    return (
-        <div>
-           <header className="bg-primary text-white">
-              <div className="container text-center">
-                  <h1>Websu - Speed testing your web pages</h1>
-                  <p className="lead">
-                     Optimize your web applications for speed using Lighthouse. Generate a
-                     report below or integrate with the API.
-                  </p>
-                <div className="row justify-content-center">
-                  <div className="col-6">
-                    <GenerateReportForm onSubmit={onSubmit} url={url} setUrl={setUrl}
-                        formFactor={formFactor} setFormFactor={setFormFactor} />
-                  </div>
+const Home = ({ onSubmit, url, setUrl, formFactor, setFormFactor, jsonReport, loading }) => {
+  return (
+    <div>
+      <header className="bg-primary text-white">
+        <Container>
+          <Row>
+            <Col>
+              <div className="text-center">
+                <h1>How fast is your website?</h1>
+                <p className="lead">Try out Websu by generating website performance report below:</p>
+                <div className="justify-content-center">
+                  <GenerateReportForm
+                    onSubmit={onSubmit}
+                    url={url}
+                    setUrl={setUrl}
+                    formFactor={formFactor}
+                    setFormFactor={setFormFactor}
+                  />
+                </div>
               </div>
-            </div>
-            </header>
-            <div className="container-fluid text-center">
-              <LoadingReportViewer loading={loading} jsonReport={jsonReport} />
-            </div>
-        </div>
-    );
-};
+            </Col>
+            <Col xs={5}>
+              <h1>What's Websu?</h1>
+              <p className="lead">
+                Websu is an <span className="font-weight-bold">open source</span> project to provide
+                Lighthouse-as-a-Service in any environent. Please read more in the{' '}
+                <a className="text-light font-weight-bold" href="https://github.com/websu-io/websu">
+                  GitHub repo
+                </a>
+                .
+              </p>
+              <p className="lead">
+                Most notably, Websu provides an HTTP REST API to run lighthouse as a service. View the{' '}
+                <Link to="/api-docs" className="text-light font-weight-bold">
+                  API documentation
+                </Link>{' '}
+                to try out the API.
+              </p>
+            </Col>
+          </Row>
+        </Container>
+      </header>
+      <div className="container-fluid text-center">
+        <LoadingReportViewer loading={loading} jsonReport={jsonReport} />
+      </div>
+    </div>
+  )
+}
 
-export default Home;
+export default Home
