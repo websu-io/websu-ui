@@ -3,7 +3,7 @@ import ReportViewer from 'react-lighthouse-viewer';
 
 import {Spinner} from 'react-bootstrap';
 
-const LoadingReportViewer = ({loading, jsonReport}) => {
+export const LoadingReportViewer = ({loading, jsonReport}) => {
     if (loading) {
       return (
           <div className="mt-3 text-center">
@@ -15,5 +15,3 @@ const LoadingReportViewer = ({loading, jsonReport}) => {
       return <ReportViewer json={jsonReport} />
     }
 };
-
-export default LoadingReportViewer;

@@ -1,7 +1,7 @@
 import React from 'react'
 import { ToggleButtonGroup, ToggleButton, Button, Col, Form } from 'react-bootstrap'
 
-const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormFactor }) => {
+export const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormFactor }) => {
   function handleSubmit(event) {
     event.preventDefault()
     onSubmit()
@@ -16,7 +16,7 @@ const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormFactor }
             type="url"
             name="url"
             placeholder="e.g. https://www.google.com"
-            value={url}
+            value={url || ""}
             onChange={(e) => setUrl(e.target.value)}
           />
         </Form.Group>
@@ -53,5 +53,3 @@ const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormFactor }
     </Form>
   )
 }
-
-export default GenerateReportForm

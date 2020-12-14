@@ -1,10 +1,10 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
-import GenerateReportForm from './GenerateReportForm'
-import LoadingReportViewer from './LoadingReportViewer'
+import { GenerateReportForm } from './GenerateReportForm'
+import { LoadingReportViewer } from './LoadingReportViewer'
 import { Link } from 'react-router-dom'
 
-const Home = ({ onSubmit, url, setUrl, formFactor, setFormFactor, jsonReport, loading }) => {
+export const Home = ({ onSubmit, url, setUrl, formFactor, setFormFactor, jsonReport, loading }) => {
   return (
     <div>
       <header className="bg-primary text-white">
@@ -52,5 +52,3 @@ const Home = ({ onSubmit, url, setUrl, formFactor, setFormFactor, jsonReport, lo
     </div>
   )
 }
-
-export default Home

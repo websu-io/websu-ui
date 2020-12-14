@@ -11,7 +11,9 @@ import {
 import {Navbar, Nav} from 'react-bootstrap';
 import SwaggerUI from "swagger-ui-react"
 import "swagger-ui-react/swagger-ui.css"
-import Home from './Home.js';
+import {Home} from './Home.js';
+import {Reports} from './Reports.js';
+import {ReportDetail} from './ReportDetail.js';
 
 
 function App() {
@@ -45,17 +47,24 @@ function App() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Nav className="mr-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/all-reports">Reports</Nav.Link>
             <Nav.Link as={Link} to="/api-docs">API Docs</Nav.Link>
           </Nav>
-         <iframe className="mr-sm-4" src="https://ghbtns.com/github-btn.html?user=websu-io&repo=websu&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
+         <iframe className="mr-sm-4" src="https://ghbtns.com/github-btn.html?user=websu-io&repo=websu&type=star&count=true&size=large" frameBorder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
         </Navbar>
         <Switch>
           <Route exact path="/">
-            <Home onSubmit={runScan} url={url} setUrl={setUrl} formFactor={formFactor}
+             <Home onSubmit={runScan} url={url} setUrl={setUrl} formFactor={formFactor}
                   setFormFactor={setFormFactor} loading={loading} jsonReport={jsonReport} />
           </Route>
           <Route exact path="/api-docs">
             <SwaggerUI url={config.apiHost + "/docs/doc.json"} />
+          </Route>
+          <Route path="/r/id/:id">
+             <ReportDetail />
+          </Route>
+          <Route exact path="/all-reports">
+             <Reports />
           </Route>
           <Route path="*">
             <NoMatch />
