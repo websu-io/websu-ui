@@ -43,14 +43,14 @@ function App() {
     return (
       <Router>
         <Navbar sticky="top" bg="dark" variant="dark">
-          <Navbar.Brand as={Link} className="offset-md-1" to="/">Websu</Navbar.Brand>
+          <Navbar.Brand as={Link} className="offset-md-3" to="/">Websu</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Nav className="mr-auto">
+          <Nav>
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/all-reports">Reports</Nav.Link>
             <Nav.Link as={Link} to="/api-docs">API Docs</Nav.Link>
           </Nav>
-         <iframe className="mr-sm-4" src="https://ghbtns.com/github-btn.html?user=websu-io&repo=websu&type=star&count=true&size=large" frameBorder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
+         <iframe className="ml-5" src="https://ghbtns.com/github-btn.html?user=websu-io&repo=websu&type=star&count=true&size=large" frameBorder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
         </Navbar>
         <Switch>
           <Route exact path="/">

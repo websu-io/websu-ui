@@ -36,7 +36,7 @@ export const Home = ({ onSubmit, url, setUrl, formFactor, setFormFactor, jsonRep
                 .
               </p>
               <p className="lead">
-                Most notably, Websu provides an HTTP REST API to run lighthouse as a service. View the{' '}
+                Websu provides an HTTP REST API to run lighthouse and a Web UI that consumes the API. View the{' '}
                 <Link to="/api-docs" className="text-light font-weight-bold">
                   API documentation
                 </Link>{' '}
