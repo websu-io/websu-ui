@@ -4,7 +4,7 @@ import { GenerateReportForm } from './GenerateReportForm'
 import { LoadingReportViewer } from './LoadingReportViewer'
 import { Link } from 'react-router-dom'
 
-export const Home = ({ onSubmit, url, setUrl, formFactor, setFormFactor, jsonReport, loading }) => {
+export const Home = ({ onSubmit, url, setUrl, formFactor, setFormFactor, jsonReport, loading, throttling, setThrottling }) => {
   return (
     <div>
       <header className="bg-primary text-white">
@@ -21,6 +21,8 @@ export const Home = ({ onSubmit, url, setUrl, formFactor, setFormFactor, jsonRep
                     setUrl={setUrl}
                     formFactor={formFactor}
                     setFormFactor={setFormFactor}
+                    throttling={throttling}
+                    setThrottling={setThrottling}
                   />
                 </div>
               </div>

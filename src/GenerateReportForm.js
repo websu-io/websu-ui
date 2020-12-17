@@ -1,12 +1,11 @@
 import React from 'react'
 import { ToggleButtonGroup, ToggleButton, Button, Col, Form } from 'react-bootstrap'
 
-export const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormFactor }) => {
+export const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormFactor, throttling, setThrottling }) => {
   function handleSubmit(event) {
     event.preventDefault()
     onSubmit()
   }
-
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Row>
@@ -32,7 +31,7 @@ export const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormF
         </Form.Group>
       </Form.Row>
       <Form.Row className="text-left">
-        <Form.Group as={Col}>
+        <Form.Group className="text-center" as={Col} xs={4}>
           <Form.Label>Simulate</Form.Label>
           <br />
           <ToggleButtonGroup
@@ -48,6 +47,18 @@ export const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormF
               Mobile
             </ToggleButton>
           </ToggleButtonGroup>
+        </Form.Group>
+        <Form.Group className="text-center" as={Col} xs={3}>
+          <Form.Label>Throttling</Form.Label>
+          <br />
+          <Form.Control as="select"
+            value={throttling}
+            onChange={(e) => setThrottling(e.target.value)}>
+            <option value="1000">1  Mbps</option>
+            <option value="5000">5  Mbps</option>
+            <option value="10000">10 Mbps</option>
+            <option value="50000">50 Mbps</option>
+          </Form.Control>
         </Form.Group>
       </Form.Row>
     </Form>

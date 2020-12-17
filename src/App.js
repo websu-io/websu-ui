@@ -21,6 +21,7 @@ function App() {
     const [formFactor, setFormFactor] = useState("desktop");
     const [loading, setLoading] = useState(false);
     const [jsonReport, setJsonReport] = useState("");
+    const [throttling, setThrottling] = useState("50000");
 
     function runScan() {
         // prepend http if http(s) isn't added
@@ -33,7 +34,9 @@ function App() {
 
         fetch(config.apiHost+'/reports', {
           method: 'post',
-          body: `{"url": "`+newUrl+`", "form_factor": "`+formFactor+`"}`,
+          body: `{"url": "`+newUrl+`", \
+                  "form_factor": "`+formFactor+`", \
+                  "throughput_kbps": `+throttling+`}`,
         }).then((response) => response.json()).then((jsonResponse) => {
                 setJsonReport(JSON.parse(jsonResponse.raw_json));
                 setLoading(false)
@@ -55,7 +58,8 @@ function App() {
         <Switch>
           <Route exact path="/">
              <Home onSubmit={runScan} url={url} setUrl={setUrl} formFactor={formFactor}
-                  setFormFactor={setFormFactor} loading={loading} jsonReport={jsonReport} />
+                  setFormFactor={setFormFactor} loading={loading} jsonReport={jsonReport}
+                  throttling={throttling} setThrottling={setThrottling} />
           </Route>
           <Route exact path="/api-docs">
             <SwaggerUI url={config.apiHost + "/docs/doc.json"} />
