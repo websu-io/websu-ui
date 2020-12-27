@@ -23,6 +23,9 @@ function App() {
     const fetchData = async () => {
       const result = await axios(config.apiHost + '/locations')
       setLocations(result.data)
+      if (result.data.length > 0) {
+        setLocation(result.data[0].name)
+      }
     }
     fetchData()
   }, [])
