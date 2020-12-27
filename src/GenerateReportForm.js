@@ -1,7 +1,18 @@
 import React from 'react'
 import { ToggleButtonGroup, ToggleButton, Button, Col, Form } from 'react-bootstrap'
 
-export const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormFactor, throttling, setThrottling }) => {
+export const GenerateReportForm = ({
+  onSubmit,
+  url,
+  setUrl,
+  formFactor,
+  setFormFactor,
+  throttling,
+  setThrottling,
+  locationVal,
+  setLocation,
+  locations,
+}) => {
   function handleSubmit(event) {
     event.preventDefault()
     onSubmit()
@@ -15,7 +26,7 @@ export const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormF
             type="url"
             name="url"
             placeholder="e.g. https://www.google.com"
-            value={url || ""}
+            value={url || ''}
             onChange={(e) => setUrl(e.target.value)}
           />
         </Form.Group>
@@ -51,15 +62,24 @@ export const GenerateReportForm = ({ onSubmit, url, setUrl, formFactor, setFormF
         <Form.Group className="text-center" as={Col} xs={3}>
           <Form.Label>Throttling</Form.Label>
           <br />
-          <Form.Control as="select"
-            value={throttling}
-            onChange={(e) => setThrottling(e.target.value)}>
-            <option value="1000">1  Mbps</option>
-            <option value="5000">5  Mbps</option>
+          <Form.Control as="select" value={throttling} onChange={(e) => setThrottling(e.target.value)}>
+            <option value="1000">1 Mbps</option>
+            <option value="5000">5 Mbps</option>
             <option value="10000">10 Mbps</option>
             <option value="50000">50 Mbps</option>
           </Form.Control>
         </Form.Group>
+        {locations.length > 0 && (
+          <Form.Group className="text-center" as={Col} xs={4}>
+            <Form.Label>Location</Form.Label>
+            <br />
+            <Form.Control as="select" value={locationVal} onChange={(e) => setLocation(e.target.value)}>
+            {locations.map((loc, index) => (
+              <option key={loc.name} value={loc.name}>{loc.display_name}</option>
+            )) }
+            </Form.Control>
+          </Form.Group>
+        )}
       </Form.Row>
     </Form>
   )
