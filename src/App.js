@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import config from './config.js'
 import './App.css'
 import { BrowserRouter as Router, Switch, Route, Link, useLocation } from 'react-router-dom'
-import { Navbar, Nav } from 'react-bootstrap'
+import { Navbar, Nav, Container } from 'react-bootstrap'
+import { isBrowser } from "react-device-detect"
 import axios from 'axios'
 import SwaggerUI from 'swagger-ui-react'
 import 'swagger-ui-react/swagger-ui.css'
@@ -65,7 +66,8 @@ function App() {
 
   return (
     <Router>
-      <Navbar sticky="top" bg="dark" variant="dark">
+      <Container fluid="xs">
+      <Navbar sticky="top" expand="sm" bg="dark" variant="dark">
         <Navbar.Brand as={Link} className="offset-md-3" to="/">
           Websu
         </Navbar.Brand>
@@ -81,6 +83,7 @@ function App() {
             API Docs
           </Nav.Link>
         </Nav>
+        { isBrowser && (
         <iframe
           className="ml-5"
           src="https://ghbtns.com/github-btn.html?user=websu-io&repo=websu&type=star&count=true&size=large"
@@ -89,7 +92,9 @@ function App() {
           width="170"
           height="30"
           title="GitHub"></iframe>
+        )}
       </Navbar>
+      </Container>
       <Switch>
         <Route exact path="/">
           <Home

@@ -1,10 +1,11 @@
 import React from 'react'
-import { ToggleButtonGroup, ToggleButton, Button, Col, Form } from 'react-bootstrap'
+import { Spinner, ToggleButtonGroup, ToggleButton, Button, Col, Form } from 'react-bootstrap'
 
 export const GenerateReportForm = ({
   onSubmit,
   url,
   setUrl,
+  loading,
   formFactor,
   setFormFactor,
   throttling,
@@ -20,7 +21,7 @@ export const GenerateReportForm = ({
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Row>
-        <Form.Group as={Col} xs={9}>
+        <Form.Group as={Col} md={9} xs={8}>
           <Form.Control
             size="lg"
             type="url"
@@ -30,19 +31,30 @@ export const GenerateReportForm = ({
             onChange={(e) => setUrl(e.target.value)}
           />
         </Form.Group>
-        <Form.Group as={Col} xs={3}>
+        <Form.Group as={Col} md={3} xs={4}>
           <Button
-            variant="success"
+            variant={ loading ? "secondary" : "success"}
             size="lg"
             block
             className="btn btn-rounded btn-md my-0 waves-effect waves-light"
             type="submit">
-            Analyze
+            { loading && (
+                <>
+                <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                </>
+            )}
+            { !loading && "Analyze" }
           </Button>
         </Form.Group>
       </Form.Row>
       <Form.Row className="text-left">
-        <Form.Group className="text-center" as={Col} xs={4}>
+        <Form.Group className="text-center" as={Col} md={4} xs={6}>
           <Form.Label>Simulate</Form.Label>
           <br />
           <ToggleButtonGroup
@@ -59,7 +71,7 @@ export const GenerateReportForm = ({
             </ToggleButton>
           </ToggleButtonGroup>
         </Form.Group>
-        <Form.Group className="text-center" as={Col} xs={3}>
+        <Form.Group className="text-center" as={Col} md={3} xs={3}>
           <Form.Label>Throttling</Form.Label>
           <br />
           <Form.Control as="select" value={throttling} onChange={(e) => setThrottling(e.target.value)}>
@@ -70,7 +82,7 @@ export const GenerateReportForm = ({
           </Form.Control>
         </Form.Group>
         {locations.length > 0 && (
-          <Form.Group className="text-center" as={Col} xs={4}>
+          <Form.Group className="text-center" as={Col} md={4} xs={3}>
             <Form.Label>Location</Form.Label>
             <br />
             <Form.Control as="select" value={locationVal} onChange={(e) => setLocation(e.target.value)}>

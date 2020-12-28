@@ -3,6 +3,30 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { GenerateReportForm } from './GenerateReportForm'
 import { LoadingReportViewer } from './LoadingReportViewer'
 import { Link } from 'react-router-dom'
+import { isBrowser, isMobile } from "react-device-detect"
+
+function HomeContent() {
+    return (
+        <Col xs={12} md={5}>
+              <h1>What's Websu?</h1>
+              <p className="lead">
+                Websu is an <span className="font-weight-bold">open source</span> project to provide
+                Lighthouse-as-a-Service in any environent. Please read more in the{' '}
+                <a className="text-light font-weight-bold" href="https://github.com/websu-io/websu">
+                  GitHub repo
+                </a>
+                .
+              </p>
+              <p className="lead">
+                Websu provides an HTTP REST API to run lighthouse and a Web UI that consumes the API. View the{' '}
+                <Link to="/api-docs" className="text-light font-weight-bold">
+                  API documentation
+                </Link>{' '}
+                to try out the API.
+              </p>
+            </Col>
+    )
+}
 
 export const Home = ({
   onSubmit,
@@ -23,7 +47,7 @@ export const Home = ({
       <header className="bg-primary text-white">
         <Container>
           <Row>
-            <Col>
+            <Col xs={12} md={7}>
               <div className="text-center">
                 <h1>How fast is your website?</h1>
                 <p className="lead">Try out Websu by generating website performance report below:</p>
@@ -32,6 +56,7 @@ export const Home = ({
                     onSubmit={onSubmit}
                     url={url}
                     setUrl={setUrl}
+                    loading={loading}
                     formFactor={formFactor}
                     setFormFactor={setFormFactor}
                     throttling={throttling}
@@ -43,30 +68,24 @@ export const Home = ({
                 </div>
               </div>
             </Col>
-            <Col xs={5}>
-              <h1>What's Websu?</h1>
-              <p className="lead">
-                Websu is an <span className="font-weight-bold">open source</span> project to provide
-                Lighthouse-as-a-Service in any environent. Please read more in the{' '}
-                <a className="text-light font-weight-bold" href="https://github.com/websu-io/websu">
-                  GitHub repo
-                </a>
-                .
-              </p>
-              <p className="lead">
-                Websu provides an HTTP REST API to run lighthouse and a Web UI that consumes the API. View the{' '}
-                <Link to="/api-docs" className="text-light font-weight-bold">
-                  API documentation
-                </Link>{' '}
-                to try out the API.
-              </p>
-            </Col>
+            { isBrowser && (
+              <HomeContent/>
+            )}
           </Row>
         </Container>
       </header>
       <div className="container-fluid text-center">
         <LoadingReportViewer loading={loading} jsonReport={jsonReport} />
       </div>
+      { isMobile && (
+       <header className="bg-primary text-white">
+        <Container>
+          <Row>
+           <HomeContent/>
+          </Row>
+        </Container>
+       </header>
+     )}
     </div>
   )
 }
