@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import config from './config.js'
 import './App.css'
 import { BrowserRouter as Router, Switch, Route, Link, useLocation } from 'react-router-dom'
 import { Navbar, Nav, Container } from 'react-bootstrap'
 import { isBrowser } from "react-device-detect"
-import axios from 'axios'
 import SwaggerUI from 'swagger-ui-react'
 import 'swagger-ui-react/swagger-ui.css'
 import { Home } from './Home.js'
@@ -12,58 +11,6 @@ import { Reports } from './Reports.js'
 import { ReportDetail } from './ReportDetail.js'
 
 function App() {
-  const [url, setUrl] = useState('')
-  const [formFactor, setFormFactor] = useState('desktop')
-  const [loading, setLoading] = useState(false)
-  const [jsonReport, setJsonReport] = useState('')
-  const [throttling, setThrottling] = useState('50000')
-  const [locationVal, setLocation] = useState('')
-  const [locations, setLocations] = useState([])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(config.apiHost + '/locations')
-      setLocations(result.data)
-      if (result.data.length > 0) {
-        setLocation(result.data[0].name)
-      }
-    }
-    fetchData()
-  }, [])
-
-  function runScan() {
-    // prepend http if http(s) isn't added
-    let newUrl = url
-    if (!/^https?:\/\//i.test(url)) {
-      newUrl = 'http://' + url
-    }
-    setUrl(newUrl)
-    setLoading(true)
-    let locationJson = ''
-    if (locationVal !== '') {
-      locationJson = `"location": "` + locationVal + `", `
-    }
-
-    fetch(config.apiHost + '/reports', {
-      method: 'post',
-      body:
-        `{"url": "` +
-        newUrl +
-        `", ` +
-        locationJson +
-        ` "form_factor": "` +
-        formFactor +
-        `", "throughput_kbps": ` +
-        throttling +
-        `}`,
-    })
-      .then((response) => response.json())
-      .then((jsonResponse) => {
-        setJsonReport(JSON.parse(jsonResponse.raw_json))
-        setLoading(false)
-      })
-  }
-
   return (
     <Router>
       <Container fluid="xs">
@@ -97,20 +44,7 @@ function App() {
       </Container>
       <Switch>
         <Route exact path="/">
-          <Home
-            onSubmit={runScan}
-            url={url}
-            setUrl={setUrl}
-            formFactor={formFactor}
-            setFormFactor={setFormFactor}
-            loading={loading}
-            jsonReport={jsonReport}
-            throttling={throttling}
-            setThrottling={setThrottling}
-            locationVal={locationVal}
-            setLocation={setLocation}
-            locations={locations}
-          />
+          <Home />
         </Route>
         <Route exact path="/api-docs">
           <SwaggerUI url={config.apiHost + '/docs/doc.json'} />

@@ -1,23 +1,66 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import config from './config.js'
 import { Spinner, ToggleButtonGroup, ToggleButton, Button, Col, Form } from 'react-bootstrap'
 
-export const GenerateReportForm = ({
-  onSubmit,
-  url,
-  setUrl,
-  loading,
-  formFactor,
-  setFormFactor,
-  throttling,
-  setThrottling,
-  locationVal,
-  setLocation,
-  locations,
-}) => {
+export const GenerateReportForm = (props) => {
+  const [formFactor, setFormFactor] = useState('desktop')
+  const [url, setUrl] = useState('')
+  const [throttling, setThrottling] = useState('50000')
+  const [loading, setLoading] = useState(false)
+  const [locationVal, setLocation] = useState('')
+  const [locations, setLocations] = useState([])
+
   function handleSubmit(event) {
     event.preventDefault()
-    onSubmit()
+    // prepend http if http(s) isn't added
+    let newUrl = url
+    if (!/^https?:\/\//i.test(url)) {
+      newUrl = 'http://' + url
+    }
+    setUrl(newUrl)
+    if (props.onLoading) props.onLoading(true)
+    setLoading(true)
+    let data = {
+      url: newUrl,
+      form_factor: formFactor,
+      throughput_kbps: parseInt(throttling),
+    }
+    if (locationVal !== '') {
+      data['location'] = locationVal
+    }
+
+    // send a POST request
+    axios({
+      method: 'post',
+      url: config.apiHost + '/reports',
+      data: data,
+    })
+      .then((response) => {
+        props.onSuccess(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+        if (props.onError) props.onError(error)
+      })
+      .then(() => {
+        setLoading(false)
+        if (props.onLoading) props.onLoading(false)
+      })
   }
+
+  // Initial mount
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(config.apiHost + '/locations')
+      setLocations(result.data)
+      if (result.data.length > 0) {
+        setLocation(result.data[0].name)
+      }
+    }
+    fetchData()
+  }, [])
+
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Row>
@@ -33,23 +76,13 @@ export const GenerateReportForm = ({
         </Form.Group>
         <Form.Group as={Col} md={3} xs={4}>
           <Button
-            variant={ loading ? "secondary" : "success"}
+            variant={loading ? 'secondary' : 'success'}
             size="lg"
             block
             className="btn btn-rounded btn-md my-0 waves-effect waves-light"
             type="submit">
-            { loading && (
-                <>
-                <Spinner
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                </>
-            )}
-            { !loading && "Analyze" }
+            {loading && <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />}
+            {!loading && 'Analyze'}
           </Button>
         </Form.Group>
       </Form.Row>
@@ -86,9 +119,11 @@ export const GenerateReportForm = ({
             <Form.Label>Location</Form.Label>
             <br />
             <Form.Control as="select" value={locationVal} onChange={(e) => setLocation(e.target.value)}>
-            {locations.map((loc, index) => (
-              <option key={loc.name} value={loc.name}>{loc.display_name}</option>
-            )) }
+              {locations.map((loc, index) => (
+                <option key={loc.name} value={loc.name}>
+                  {loc.display_name}
+                </option>
+              ))}
             </Form.Control>
           </Form.Group>
         )}
