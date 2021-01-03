@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import ReactMarkdown from 'react-markdown'
 import ReportViewer from 'react-lighthouse-viewer'
-import { Container, Row, Card } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import config from './config.js'
