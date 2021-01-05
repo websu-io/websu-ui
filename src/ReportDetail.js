@@ -25,13 +25,9 @@ export const ReportDetail = () => {
 
   return (
     <Container className="mt-4">
-      <h1>Website performance of {report.url}</h1>
+      <h3>Website performance of <a rel="noopener noreferrer nofollow" target="_blank" href={report.url}>{report.url}</a></h3>
       <p className="lead">
-        A website performance report run for{' '}
-        <a rel="noopener noreferrer" target="_blank" href={report.url}>
-          {report.url}
-        </a>{' '}
-        was run at {formatDate(report.created_at)}. Performance score was {report.performance_score}.
+        Created on {formatDate(report.created_at)}.
       </p>
       {report.raw_json && <ReportViewer json={JSON.parse(report.raw_json)} />}
     </Container>
