@@ -16,7 +16,12 @@ function App() {
       <Container fluid="xs">
       <Navbar sticky="top" expand="sm" bg="dark" variant="dark">
         <Navbar.Brand as={Link} className="offset-md-3" to="/">
-          Websu
+          <img
+              src="/logo-120w.png"
+              width="120"
+              className="d-inline-block align-top"
+              alt="Websu logo"
+            />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Nav>
