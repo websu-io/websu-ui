@@ -63,21 +63,17 @@ export const Home = () => {
 function HomeContent() {
   return (
     <Col xs={12} md={5}>
-      <h1>What's Websu?</h1>
+      <h2>Performance Optimization</h2>
       <p className="lead">
-        Websu is an <span className="font-weight-bold">open source</span> project to provide Lighthouse-as-a-Service in
-        any environent. Please read more in the{' '}
-        <a className="text-light font-weight-bold" href="https://github.com/websu-io/websu">
-          GitHub repo
-        </a>
-        .
+      Websu helps you optimize your web applications for speed
+      by generating detailed speed reports.
       </p>
       <p className="lead">
-        Websu provides an HTTP REST API to run lighthouse and a Web UI that consumes the API. View the{' '}
-        <Link to="/api-docs" className="text-light font-weight-bold">
-          API documentation
-        </Link>{' '}
-        to try out the API.
+      Liking it?
+      Consider starring the {' '}
+        <a className="text-light font-weight-bold" href="https://github.com/websu-io/websu">
+          GitHub repo
+        </a>, tweets are welcome too.
       </p>
     </Col>
   )
