@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Spinner, Container, Row, Col } from 'react-bootstrap'
 import { GenerateReportForm } from './GenerateReportForm'
 import { AlertError } from './AlertError'
-import { Link } from 'react-router-dom'
 import { isBrowser, isMobile } from 'react-device-detect'
 import ReportViewer from 'react-lighthouse-viewer'
 
